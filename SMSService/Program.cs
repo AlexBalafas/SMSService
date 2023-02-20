@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SMSService.DbContext;
+using SMSService.DbContexts;
+using SMSService.Dtos;
+using SMSService.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +14,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //builder.Services.AddScoped<IApplicationsService, ApplicationsService>();
 
 
-//builder.Services.AddAutoMapper(cfg =>
-//{
-//    cfg.AllowNullCollections = true;
-//    cfg.AllowNullDestinationValues = true;
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AllowNullCollections = true;
+    cfg.AllowNullDestinationValues = true;
 
-//    cfg.CreateMap<ApplicationDto, Application>().ReverseMap();
+    cfg.CreateMap<SmsDto, Sms>().ReverseMap();
 
 
-//}, AppDomain.CurrentDomain.GetAssemblies());
+}, AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
