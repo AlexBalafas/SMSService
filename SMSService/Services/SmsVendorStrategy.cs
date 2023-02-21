@@ -51,7 +51,6 @@ public class SmsVendorCYStrategy : ISmsVendorStrategy
             var stringBuilder = new StringBuilder();
             for (var i = 0; i < parts.Count; i++)
             {
-                // Append each part of the message to the previous one
                 stringBuilder.Append($"{i + 1}/{parts.Count} {parts[i]} ");
             }
 
@@ -64,7 +63,7 @@ public class SmsVendorCYStrategy : ISmsVendorStrategy
 
             return m;
         }
-       
+
         return null;
 
     }
@@ -72,7 +71,6 @@ public class SmsVendorCYStrategy : ISmsVendorStrategy
     {
         var parts = new List<string>();
 
-        // Split the message into chunks of MaxSmsLength characters
         for (var i = 0; i < message.Length; i += MaxSmsLength)
         {
             var chunkLength = Math.Min(MaxSmsLength, message.Length - i);

@@ -32,7 +32,6 @@ namespace SMSService.Services
                     Receiver = smsModel.Receiver,
                     TimeStamp = DateTime.Now,
                     Vendor = ventor
-                    //Vendor
                 };
 
                 _context.Sms.Add(message);

@@ -96,10 +96,9 @@ namespace SMSService.Controllers
         }
         public Task<SmsDto> SendSmsWithStrategy(SmsDto model)
         {
-           
+
             try
             {
-                // Determine the appropriate strategy based on the destination country code
                 ISmsVendorStrategy strategy;
                 var messageLang = GetVendorCode(model.Receiver);
                 if (messageLang == "30")
@@ -115,13 +114,9 @@ namespace SMSService.Controllers
                     strategy = new SmsVendorRestStrategy();
                 }
 
-                // Send the SMS using the selected strategy
                 var response = strategy.SendSms(model.Receiver, model.Text);
 
-                // Save the SMS to the database (replace with your own implementation)
-                //SaveSmsToDatabase(smsDto.To, smsDto.Message, response);
 
-                // Return the success response
                 return response;
             }
             catch (Exception ex)

@@ -24,7 +24,7 @@ namespace SMSService.Context
             _strategies = new Dictionary<string, ISmsVendorStrategy>
             {
                 { "30", new SmsVendorGRStrategy() },
-                { "35", new SmsVendorCYStrategy() }               
+                { "35", new SmsVendorCYStrategy() }
             };
         }
 
@@ -36,13 +36,13 @@ namespace SMSService.Context
 
                 if (_strategies.TryGetValue(messageLang, out var strategy))
                 {
-                  
+
                     var mod = strategy.SendSms(model.Receiver, model.Text);
 
 
                     Console.WriteLine(mod);
 
-                }              
+                }
 
             }
             catch (Exception ex)
@@ -56,20 +56,5 @@ namespace SMSService.Context
             return number.Substring(1, 2);
         }
 
-        //private static string GetVendorCode(string number,string message)
-        //{
-        //    if (!Regex.IsMatch(message, @"[^\p{IsGreek}]") && message.Length < 160)
-        //    {
-        //        return "GR";
-        //    }
-        //    else if(!Regex.IsMatch(message, @"[^a-zA-Zα-ωΑ-Ω]"))
-        //    {
-        //        return "CY";
-        //    }
-        //    else
-        //    {
-        //        return "Rest";
-        //    }
-        //}
     }
 }
