@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using SMSService.DbContexts;
 using SMSService.Dtos;
 using SMSService.Entities;
+using SMSService.Interfaces;
+using SMSService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,7 @@ ConfigurationManager configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddScoped<IApplicationsService, ApplicationsService>();
+builder.Services.AddScoped<ISmsService,SmsService>();
 
 
 builder.Services.AddAutoMapper(cfg =>
