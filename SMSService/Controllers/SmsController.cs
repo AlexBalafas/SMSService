@@ -78,10 +78,10 @@ namespace SMSService.Controllers
 
                 var mod = new Sms()
                 {
-                    Text = model.Text,
+                    Text = v.Result.Text,
                     Receiver = model.Receiver,
-                    Vendor = v,
-                    TimeStamp = DateTime.Now,
+                    Vendor = v.Result.Vendor,
+                    TimeStamp = model.TimeStamp,
                 };
                 await _context.Sms.AddAsync(mod);
                 await _context.SaveChangesAsync();
@@ -94,23 +94,9 @@ namespace SMSService.Controllers
                 throw ex;
             }
         }
-        public string SendSmsWithStrategy(SmsDto model)
+        public Task<SmsDto> SendSmsWithStrategy(SmsDto model)
         {
-            //try
-            //{
-            //    var messageLang = GetVendorCode(model.Receiver);
-
-            //    if (_strategies.TryGetValue(messageLang, out var strategy))
-            //    {
-
-            //        var mod = strategy.SendSms(model.Receiver, model.Text);
-
-            //        return mod.Result.Vendor;
-            //        Console.WriteLine(mod.Result.);
-
-            //    }
-
-            //}
+           
             try
             {
                 // Determine the appropriate strategy based on the destination country code
@@ -136,7 +122,7 @@ namespace SMSService.Controllers
                 //SaveSmsToDatabase(smsDto.To, smsDto.Message, response);
 
                 // Return the success response
-                return response.Result.Vendor;
+                return response;
             }
             catch (Exception ex)
             {
