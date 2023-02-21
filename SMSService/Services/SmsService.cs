@@ -3,6 +3,7 @@ using SMSService.DbContexts;
 using SMSService.Dtos;
 using SMSService.Entities;
 using SMSService.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace SMSService.Services
 {
@@ -16,33 +17,22 @@ namespace SMSService.Services
             _context = context;
             _mapper = mapper;
         }
-
-        public async Task<SmsDto> Create(SmsDto smsModel)
-        {
-            var message = new Sms()
-            {
-                Receiver = smsModel.Receiver,
-                Text = smsModel.Text,
-                Vendor = smsModel.Vendor,
-                TimeStamp = DateTime.Now
-            };
-            await _context.Sms.AddAsync(message);
-            await _context.SaveChangesAsync();
-
-            var recordDto = _mapper.Map<SmsDto>(message);
-            return recordDto;
-        }
         public async Task<SmsDto> SendSmsService(SmsDto smsModel)
         {
             try
             {
-                var ventor = await SelectVentor(smsModel.Text);
+                if (smsModel.Text.Length > 480)
+                {
+                    Console.WriteLine("Message is too long.");
+                }
+                var ventor = await SelectVentor(smsModel);
                 var message = new Sms()
                 {
-                    Receiver = smsModel.Receiver,
                     Text = smsModel.Text,
-                    Vendor = ventor,
-                    TimeStamp = DateTime.Now
+                    Receiver = smsModel.Receiver,
+                    TimeStamp = DateTime.Now,
+                    Vendor = ventor
+                    //Vendor
                 };
 
                 _context.Sms.Add(message);
@@ -56,23 +46,25 @@ namespace SMSService.Services
                 throw ex;
             }
         }
-
-        public async Task<String> SelectVentor(string ven)
+        public async Task<String> SelectVentor(SmsDto model)
         {
-
-            var ventor = ven;
-
-            if (ventor == null)
+            Send(model.Text);
+            return null;
+        }
+        public void Send(string text)
+        {
+            if (!IsGreekText(text))
             {
-                return null;
+                Console.WriteLine("Message text must be in Greek characters.");
             }
-            else
-            {
-
-
-            }
-
-            return ventor;
+        }
+        private bool IsGreekText(string text)
+        {
+            return !Regex.IsMatch(text, @"[^\p{IsGreek}]");
+        }
+        private bool IsGreekOrEnglishText(string text)
+        {
+            return !Regex.IsMatch(text, @"[^a-zA-Zα-ωΑ-Ω]");
         }
     }
 }

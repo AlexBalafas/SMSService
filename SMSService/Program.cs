@@ -15,6 +15,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddScoped<ISmsService,SmsService>();
 
+builder.Services.AddScoped<ISmsVendorStrategy, SmsVendorGRStrategy>();
+builder.Services.AddScoped<ISmsVendorStrategy, SmsVendorGRStrategy>();
+builder.Services.AddScoped<ISmsVendorStrategy, SmsVendorCYStrategy>();
+builder.Services.AddScoped<ISmsVendorStrategy, SmsVendorRestStrategy>();
+
 
 builder.Services.AddAutoMapper(cfg =>
 {
